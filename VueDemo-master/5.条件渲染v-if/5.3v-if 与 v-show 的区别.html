@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>v-if 与 v-show 的区别</title>
+		<script src="../vue.js"></script>
+	</head>
+<!-- v-if 与 v-show 都是条件渲染，功能一样，只是机制/适用场景不同
+1.区别
+ v-if类似懒汉式，如果条件为false，就跳过，不加载
+ v-show类似饿汉式，立刻加载，如果条件为false，切换元素的 CSS 属性 display，将其隐藏。
+2.什么时候用？
+如果需要非常频繁地切换，则使用 v-show ；
+如果在运行时条件很少改变，则使用 v-if 较好
+3.优先级问题
+当 v-if 与 v-for 一起使用时，v-for 具有比 v-if 更高的优先级。
+ -->
+ 
+	<body>
+		<div id="app">
+			<h1 v-show="ok">Hello!</h1>
+			<h1 v-if="ok">Hello!</h1>
+		</div>
+		
+		<script>
+			var app = new Vue({
+				el: '#app',
+				data: { 
+					true
+				}
+			});
+		</script>
+	</body>
+
+</html>

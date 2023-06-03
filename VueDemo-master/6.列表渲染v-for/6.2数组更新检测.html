@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>数组更新检测</title>
+		<script src="../vue.js"></script>
+	</head>
+
+	<body>
+		<ul id="example-1">
+		  <li v-for="item in items">
+		    {{ item.message }}
+		  </li>
+		</ul>
+		
+		<script>
+			var example1 = new Vue({
+			  el: '#example-1',
+			  data: {
+			    items: [
+			      { message: 'Foo1' },
+			      { message: 'Bar1' }
+			    ]
+			  }
+			})
+			/* 
+			一、变异方法（调用之后会改变这个数组对象本身（增删改..））
+			vue提供对数组的操作方法：
+				push()
+				pop()
+				shift()
+				unshift()
+				splice()
+				sort()
+				reverse() 
+			 */
+			example1.items.push({ message: 'Baz1' });
+			example1.items.reverse();
+			
+			
+			/* 
+			 二、非变异方法(不会改变原始数组，总是返回另一个新数组)
+				例如 filter()、concat() 和 slice()
+				当使用非变异方法时，可以用新数组替换旧数组：
+			 */
+			
+			/* .filter()用正则表达式检查数组当中的每个元素，匹配的输出，组成一个新的数组 */
+			example1.items = example1.items.filter(function (item) {
+			  return item.message.match(/[a-zA-Z]*[0-9]+/)
+			})
+			/* 注意：你可能认为这将导致 Vue 丢弃现有 DOM 并重新渲染整个列表。幸运的是，事实并非如此。Vue 为了使得 DOM 元素得到最大范围的重用而实现了一些智能的启发式方法。
+			！所以用一个含有相同元素的数组去替换原来的数组是非常高效的操作。 */
+			
+			
+			/* 三、注意事项：由于js的限制，数组的响应式，存在例外情况 */
+			example1.items[1] = { message: 'Baz111' } // 不是响应性的，你可以看到items虽然改变，但是页面无变化
+			example1.items.length = 3 // 不是响应性的
+			/* 尴尬的是，虽然官网上这么说，但试验过之后发现它还是响应式的。应该是版本更新修复了这个问题 */
+			
+		</script>
+	</body>
+
+</html>

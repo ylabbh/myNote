@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<title>2.2{{}}中使用javaScript表达式</title>
+<script src="../vue.js"></script>
+
+
+</head>
+
+<body>
+<div id="app">
+<!-- 1.迄今为止，在我们的模板中，我们一直都只绑定简单的属性键值。但实际上，对于所有的数据绑定，Vue.js 都提供了完全的 JavaScript 表达式支持。 -->
+	<p>{{ msg + 1 }}</p>
+	<p>{{ booleanParm ? 'YES' : 'NO' }}</p>
+	<p>{{ message.split('').reverse().join('') }}</p>
+	<div v-bind:id="'list-' + myId">这个标签的id为list-1</div><!--  -->
+
+
+<!-- 2.有个限制就是，每个绑定都只能包含单个表达式，所以下面的例子都不会生效。 -->
+	<!-- 这是语句，不是表达式 -->
+	{{ var a = 1 }}
+	
+	<!-- 流控制也不会生效，请使用三元表达式 -->
+	{{ if (ok) { return message } }}
+	
+<!-- 3.模板表达式都被放在沙盒中，只能访问全局变量的一个白名单，如 Math 和 Date 。你不应该在模板表达式中试图访问用户定义的全局变量。 -->
+</div>
+
+<script>
+	var vm = new Vue({
+		el: '#app',
+		data: {
+			msg: 1,
+			booleanParm:true,
+			message:'hello!',
+			myId:'1'
+		}
+	})
+</script>
+</body>
+
+</html>

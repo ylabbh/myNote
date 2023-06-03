@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<!-- 组件系统是 Vue 的另一个重要概念，因为它是一种抽象，允许我们使用小型、独立和通常可复用的组件构建大型应用。 -->
+	<head>
+		<meta charset="UTF-8">
+		<title>9.1组件化--抽取公有dom树</title>
+		<script src="../vue.js"></script>
+
+	</head>
+
+	<body>
+		<div id="app">
+			<li-demo></li-demo>
+			<count-click></count-click><!-- 3.可以看到，2组件定义好了之后，是可复用的，这里引用两次同一个组件，它们是相互独立的 -->
+			<count-click></count-click>
+		</div>
+		
+		
+		<script>
+			/* 2.声明了两个组件，注意第二个
+			 Vue.component(组件名,{template:组件内容})是全局注册，全局注册的组件可以用在其被注册之后的任何 (通过 new Vue) 新创建的 Vue 根实例，也包括其组件树中的所有子组件的模板中。
+			 
+			 */
+			Vue.component('li-demo', {
+			  template: '<li>这是个待办项</li>'
+			})
+			
+			Vue.component('count-click', {
+			  template: '<button v-on:click="count++">点击了{{count}}次</button>',
+			  /* 3.注意：一个组件的 data 选项必须是一个函数，
+			  因此每个实例可以维护一份被返回对象的独立的拷贝-----这保证了组件的可复用*/
+			  data:function(){
+				  return {
+					  count:0
+				  }
+			  }
+			})
+			
+			
+			/* 1.创建Vue实例、*/
+			var vm = new Vue({
+				el: '#app'
+			});
+			
+		</script>
+	
+	</body>
+
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>表单输入的一些修饰符</title>
+		<script src="../vue.js"></script>
+	</head>
+
+	<body>
+		<div id="app">
+			<!-- v-model.lazy 在“change”时而非“input”时更新 -->
+			<input v-model.lazy="msg" >{{msg}}
+			<!-- v-model.number 将用户的输入值转为数值类型  -->
+			<input v-model.number="age" type="number">{{age}}
+			<!-- v-model.trim 自动过滤用户输入的首尾空白字符 -->
+			<input v-model.trim="msg1">{{msg1}}
+			
+		</div>
+
+		
+		<script>
+			var app = new Vue({
+				el: '#app',
+				data: { 
+					msg: 'Hello Vue!' ,
+					msg1:'',
+					age:''
+				}
+			});
+		</script>
+	</body>
+
+</html>

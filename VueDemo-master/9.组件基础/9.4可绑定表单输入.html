@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="../vue.js"></script>
+	</head>
+
+	<body>
+		<div id="blog-posts-events-demo">
+		  <custom-input v-model="searchText1"></custom-input>
+		  <custom-input v-model="searchText2"></custom-input>
+		  <custom-input v-model="searchText3"></custom-input><br>
+		  {{searchText1}}<br>
+		  {{searchText2}}<br>
+		  {{searchText3}}<br>
+		</div>
+		
+		<div id="app">
+			<base-checkbox v-model="lovingVue"></base-checkbox>
+			{{lovingVue}}
+		</div>
+		
+		<script>
+			/* 组件是表单且要绑定用户输入，即实现v-model指令，需要这样定义即可。
+				 为了让它正常工作，这个组件内的 <input> 必须：
+				 
+				 将其 value attribute 绑定到一个名叫 value 的 prop 上
+				 在其 input 事件被触发时，将新的值通过自定义的 input 事件抛出
+			 */
+			Vue.component('custom-input', {
+			  props: ['value'],
+			  template: `
+			    <input
+			      v-bind:value="value"
+			      v-on:input="$emit('input', $event.target.value)"
+			    >
+			  `
+			})
+			
+			new Vue({
+			  el: '#blog-posts-events-demo',
+			  data: {
+			     searchText1:'',
+				 searchText2:'',
+				 searchText3:''
+			  }
+			})
+			
+			
+			
+			/* -------------单选框和复选框的绑定有些区别，直接复制黏贴即可使用-------------- */
+			/* 一个组件上的 v-model 默认会利用名为 value 的 prop 和名为 input 的事件，但是像单选框、复选框等类型的输入控件可能会将 value attribute 用于不同的目的。model 选项可以用来避免这样的冲突： */
+			/* 注意你仍然需要在组件的 props 选项里声明 checked 这个 prop。 */
+			Vue.component('base-checkbox', {
+			  model: {
+			    prop: 'checked',
+			    event: 'change'
+			  },
+			  props: {
+			    checked: Boolean
+			  },
+			  template: `
+			    <input
+			      type="checkbox"
+			      v-bind:checked="checked"
+			      v-on:change="$emit('change', $event.target.checked)"
+			    >
+			  `
+			})
+			
+			
+			var vm = new Vue({
+				el: '#app',
+				data:{
+					lovingVue:false
+				}
+			});
+			
+			
+		</script>
+	</body>
+
+</html>

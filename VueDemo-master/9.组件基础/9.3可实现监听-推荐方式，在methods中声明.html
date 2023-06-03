@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="../vue.js"></script>
+	</head>
+
+<!-- 推荐这种方式，既然是监听事件，为什么不在methods里声明方法呢？
+ 1.组件定义时：$emit('方法名')
+ 2.html使用组件时，v-on:方法名="对应的相应方法(入参)"
+ 3.vue实例中methods定义
+ -->
+	<body>
+		<div id="blog-posts-events-demo">
+		  <div :style="{ fontSize: postFontSize + 'em' }">
+		    <blog-post
+		      v-for="post in posts"
+		      v-bind:key="post.id"
+		      v-bind:post="post"
+			   v-on:text-1111="onEnlargeText(0.1)"
+		    ></blog-post>
+		  </div>
+		</div>
+		
+		<script>
+			Vue.component('blog-post', {
+			  props: ['post'],
+			  template: `
+			    <div class="blog-post">
+			      <h3>{{ post.title }}</h3>
+				  
+			      <button v-on:click="$emit('text-1111')">/* 我们推荐你始终使用 kebab-case 的事件名。*/
+			        Enlarge text
+			      </button>
+
+			    </div>
+			  `
+			})
+			
+			
+			new Vue({
+			  el: '#blog-posts-events-demo',
+			  data: {
+			    posts: [{
+			    		id: 1,
+			    		title: 'My journey with Vue'
+			    		
+			    	},
+			    	{
+			    		id: 2,
+			    		title: 'Blogging with Vue'
+			    	},
+			    	{
+			    		id: 3,
+			    		title: 'Why Vue is so fun'
+			    	}
+			    ],
+			    postFontSize: 1
+			  },
+			  methods: {
+			    onEnlargeText: function (enlargeAmount) {
+			      this.postFontSize += enlargeAmount
+			    }
+			  }
+			})
+			
+			
+		</script>
+	</body>
+
+</html>

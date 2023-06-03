@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>7.4按键修饰符</title>
+		<script src="../vue.js"></script>
+	</head>
+
+	<body>
+		<div id="app">
+			<!-- .enter修饰符：只有在 `key` 是 `Enter` 时调用 `vm.submit()` -->
+			<input v-on:keyup.enter="m1">
+			
+			<!-- 你可以直接将 KeyboardEvent.key 暴露的任意有效按键名转换为 kebab-case 来作为修饰符。 -->
+			<!-- 也就是说，所有按键都可以用一个修饰符替代，然后直接指定这里是哪些按键才能触发 -->
+			<input v-on:keyup.page-down="onPageDown"><!-- 在上述示例中，处理函数只会在 $event.key 等于 PageDown 时被调用。 -->
+			
+		</div>
+		
+		<script>
+			var app = new Vue({
+				el: '#app',
+				data: { 
+					message: 'Hello Vue!' 
+				},
+				methods:{
+					m1:function(){
+						alert("只有Enter键才会触发")
+					}
+				}
+			});
+		</script>
+	</body>
+
+</html>

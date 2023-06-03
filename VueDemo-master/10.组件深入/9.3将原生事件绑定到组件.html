@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<!-- 组件系统是 Vue 的另一个重要概念，因为它是一种抽象，允许我们使用小型、独立和通常可复用的组件构建大型应用。 -->
+	<head>
+		<meta charset="UTF-8">
+		<title>9.1组件化--抽取公有dom树</title>
+		<script src="../vue.js"></script>
+
+	</head>
+
+	<body>
+		<div id="app">
+			<base-input v-on:focus.native="onFocus"></base-input>
+		</div>
+		
+		
+		<script>
+			Vue.component('base-input', {
+			  inheritAttrs: false,
+			  props: ['label', 'value'],
+			  computed: {
+			    inputListeners: function () {
+			      var vm = this
+			      // `Object.assign` 将所有的对象合并为一个新对象
+			      return Object.assign({},
+			        // 我们从父级添加所有的监听器
+			        this.$listeners,
+			        // 然后我们添加自定义监听器，
+			        // 或覆写一些监听器的行为
+			        {
+			          // 这里确保组件配合 `v-model` 的工作
+			          input: function (event) {
+			            vm.$emit('input', event.target.value)
+			          }
+			        }
+			      )
+			    }
+			  },
+			  template: `
+			    <label>
+			      {{ label }}
+			      <input
+			        v-bind="$attrs"
+			        v-bind:value="value"
+			        v-on="inputListeners"
+			      >
+			    </label>
+			  `
+			})
+			
+			var vm = new Vue({
+				el: '#app',
+				methods:{
+					onFocus:function(){
+						console.log("鼠标放在了输入框上~");
+					}
+				}
+			});
+			
+		</script>
+	
+	</body>
+
+</html>

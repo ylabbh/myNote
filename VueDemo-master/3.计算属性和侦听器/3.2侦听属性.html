@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>侦听属性</title>
+		<script src="../vue.js"></script>
+	</head>
+<!-- 
+1.类似于“观察者模式”，如果希望几个“数据”发生联动，某个数据改变，其它数据能够知晓，那么使用 侦听属性，而不要滥用watch
+下面这个演示，用watch监听Name、sex两个变量同样可以实现联动。但是十分没必要。
+
+ PS：我感觉这是个伪概念，记住computed计算属性这一个东西就好了。
+ 
+2.computed计算属性:getter/setter方法
+计算属性默认只有 getter ，不过在需要时你也可以提供一个 setter ：
+
+ -->
+	<body>
+		<div id="app">
+			<input v-model="detail">
+			<input v-model="Name">
+			<input v-model="sex">
+		</div>
+		
+		 
+		<script>
+			var app = new Vue({
+				el: '#app',
+				data: { 
+					Name: 'Hello Vue!' ,
+					sex:'女'
+				},
+				computed:{
+					detail:{
+						get:function(){
+							return this.Name + this.sex;
+						},
+						
+						//app.detail = 'John Doe' 时，setter 会被调用，vm.firstName 和 vm.lastName 也会相应地被更新。
+						//类似watch，值改变的时候触发。
+						set:function(newValue){
+							var names = newValue.split(',');
+							this.Name = names[0];
+							this.sex = names[1];
+						}
+						
+					}
+				}
+			});
+		</script>
+	</body>
+
+</html>

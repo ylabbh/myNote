@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>监听事件</title>
+		<script src="../vue.js"></script>
+	</head>
+
+	<body>
+		<div id="example-2">
+			<!-- 一、在methods里声明一个方法，绑定到元素上 -->
+			<button v-on:click="greet">Greet</button>
+		</div>
+
+		<!-- 二、如果我们的传参是外来的不属于vue实例中。可以直接传参 -->
+		<div id="example-3">
+			<button v-on:click="say('hi')">Say hi</button>
+			<button v-on:click="say('what')">Say what</button>
+
+			<button v-on:click="warn('Form cannot be submitted yet.', $event)">
+				Submit
+			</button>
+		</div>
+		
+		<!-- 三、v-on的修饰符：
+				 .stop
+				 .prevent
+				 .capture
+				 .self
+				 .once
+				 .passive
+				 
+				 修饰符：理解为对指令的执行做一些限制/声明
+		 -->
+<!-- 阻止单击事件继续传播 -->
+<a v-on:click.stop="doThis"></a>
+
+<!-- 提交事件不再重载页面 -->
+<form v-on:submit.prevent="onSubmit"></form>
+
+<!-- 修饰符可以串联 -->
+<a v-on:click.stop.prevent="doThat"></a>
+
+<!-- 只有修饰符 -->
+<form v-on:submit.prevent></form>
+
+<!-- 添加事件监听器时使用事件捕获模式 -->
+<!-- 即内部元素触发的事件先在此处理，然后才交由内部元素进行处理 -->
+<div v-on:click.capture="doThis">...</div>
+
+<!-- 只当在 event.target 是当前元素自身时触发处理函数 -->
+<!-- 即事件不是从内部元素触发的 -->
+<div v-on:click.self="doThat">...</div>
+
+
+		<script>
+			var example2 = new Vue({
+				el: '#example-2',
+				data: {
+					name: 'Vue.js'
+				},
+				// 在 `methods` 对象中定义方法
+				methods: {
+					greet: function(event) {
+						alert('Hello ' + this.name + '!')
+						// `event` 是原生 DOM 事件
+						if (event) {
+							alert(event.target.tagName) //弹窗：触发这个事件的dom的标签名。
+						}
+					}
+				}
+			})
+
+
+			// 也可以用 JavaScript 直接调用方法
+			example2.greet() // => 'Hello Vue.js!'可以看到if (event) 并没执行，因为没有触发事件
+
+			new Vue({
+				el: '#example-3',
+				methods: {
+					say: function(message) {
+						alert(message)
+					},
+					warn: function(message, event) {
+						// 现在我们可以访问原生事件对象
+						if (true) {
+							//preventDefault() 方法阻止元素发生默认的行为（例如，当点击提交按钮时阻止对表单的提交）。
+							//很多的网页元素都会有默认的行为，比如说当你点击一下超链接a标签的时候，它会有一个跳转的行为；当你在网页上点鼠标右键时会出现一个右键菜；当你在一个form表单里点击提交按钮时网页会产生提交行为并刷新网页，
+							//通过这个方法声明不执行它的默认方法。
+							event.preventDefault()
+						}
+						alert(message)
+					}
+				}
+			})
+			
+			
+			
+		</script>
+	</body>
+
+</html>

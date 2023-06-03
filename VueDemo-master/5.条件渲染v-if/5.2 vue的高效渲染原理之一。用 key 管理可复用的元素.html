@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="../vue.js"></script>
+	</head>
+<!-- 
+1.Vue 会尽可能高效地渲染元素，通常会复用已有元素而不是从头开始渲染。这么做除了使 Vue 变得非常快之外，还有其它一些好处。
+	--也就是说，if(?){<input A>}else{<input B>}中有两个input标签，换作其它框架，会全部加载，然后根据if判断使用哪个
+	但是vue只会加载一个input标签，根据if的变化情况吧input标签里的属性换掉。。
+ 
+ 类似于“减少敲重复代码”，这样做等于“在加载时减少准备重复的元素”。有利于提高性能
+ 
+ 这是vue的默认行为。但是你也可以进行更精细的控制：添加一个具有唯一值的 key 属性 
+ 比如我有一堆input标签，加上key后，相同key的视为一组(相同key加载一个。不同的key加载多个)
+ -->
+	<body>
+		<div id="app">
+			<template v-if="loginType === 'username'">
+			  <label>Username</label>
+			  <input placeholder="Enter your username">
+			</template>
+			<template v-else>
+			  <label>Email</label>
+			  <input placeholder="Enter your email address">
+			</template>
+			<button type="button" @click="changeType">切换登录方式</button>
+		</div>
+		
+		<div id="app1">
+			<template v-if="loginType === 'username'">
+			  <label>Username</label>
+			  <input placeholder="Enter your username" key="username-input">
+			</template>
+			<template v-else>
+			  <label>Email</label>
+			  <input placeholder="Enter your email address" key="email-input">
+			</template>
+			<button type="button" @click="changeType">切换登录方式</button>
+		</div>
+		
+		<script>
+			var app = new Vue({
+				el: '#app',
+				data: { 
+					loginType: 'username' 
+				},
+				methods:{
+					changeType:function(){
+						if(this.loginType === 'username'){
+							this.loginType = 'other';
+						}else{
+							this.loginType = 'username';
+						}
+					}
+				}
+			});
+			
+			var app1 = new Vue({
+				el: '#app1',
+				data: { 
+					loginType: 'username' 
+				},
+				methods:{
+					changeType:function(){
+						if(this.loginType === 'username'){
+							this.loginType = 'other';
+						}else{
+							this.loginType = 'username';
+						}
+					}
+				}
+			});
+		</script>
+	</body>
+
+</html>

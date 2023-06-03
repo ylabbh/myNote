@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="../vue.js"></script>
+	</head>
+<!-- 我们通过在vue实例中声明data可在html中动态地绑定数据，那么，如果反过来，我想通过表单输入的方式改变这些data的值呢？ -->
+	<body>
+		<div id="app">
+			<!-- 单行文本 -->
+			<input v-model="message"> {{ message }}
+		
+			<!-- 多行文本 --><br>
+			<textarea v-model="message"></textarea><br>
+		
+			<!-- 单个复选框，绑定到布尔值： -->
+		<input type="checkbox" id="checkbox" v-model="checked">{{ checked }}<br>
+		
+			<!-- 多个复选框，绑定到同一个数组： -->
+		  <input type="checkbox" id="jack" value="Jack" v-model="checkedNames">
+		  <label for="jack">Jack</label>
+		  <input type="checkbox" id="john" value="John" v-model="checkedNames">
+		  <label for="john">John</label>
+		  <input type="checkbox" id="mike" value="Mike" v-model="checkedNames">
+		  <label for="mike">Mike</label>
+		  {{ checkedNames }}<br>
+		  
+		  
+		  <!-- 为单选/复选框绑定多样的值：
+		  true-value/false-value：我们不仅可以指示复选框在被选中时有什么值，甚至也可以在未选中的时候也绑定值 -->
+		  <input
+		    type="checkbox"
+		    v-model="toggle"
+		    true-value="选中时这个复选框的值"
+		    false-value="未选中时这个复选框的值"
+		  >{{toggle}}
+		
+		
+		<!-- 单选按钮 -->
+		  <input type="radio" id="one" value="One" v-model="picked">
+		  <label for="one">One</label><br>
+		  <input type="radio" id="two" value="Two" v-model="picked">
+		  <label for="two">Two</label>
+		  {{ picked }}<br>
+		<!-- 选择框(option没有value属性时，默认绑定文本ABC) -->
+		  <select v-model="selected">
+		    <option disabled value="">请选择</option>
+		    <option>A</option>
+		    <option>B</option>
+		    <option>C</option>
+		  </select>
+		  <span>Selected: {{ selected }}</span>
+		  
+		  <select v-model="selected3">
+		      <!-- 内联对象字面量 -->
+		    <option v-bind:value="{ number: 123 }">下拉1</option>
+			<option v-bind:value="{ number: 2323 }">下拉2</option>
+		  </select>{{selected3}}
+		  
+		<!-- 选择框（多选时 (绑定到一个数组)：） -->
+		  <select v-model="selected1" multiple style="width: 50px;">
+		    <option>A</option>
+		    <option>B</option>
+		    <option>C</option>
+		  </select>
+		  <br>
+		  <span>Selected: {{ selected1 }}</span>
+		<!-- 选择框：用v-for动态渲染下拉框 -->
+		  <select v-model="selected2">
+		    <option v-for="option in options" v-bind:value="option.value">
+		      {{ option.text }}
+		    </option>
+		  </select>
+		  <span>Selected: {{ selected2 }}</span>
+		
+		
+		
+		<!-- 值的绑定，对于单选按钮，复选框及选择框的选项，v-model 绑定的值通常是静态字符串 (对于复选框也可以是布尔值)： -->
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		</div>
+		
+		<script>
+			var app = new Vue({
+				el: '#app',
+				data: { 
+					message: 'Hello Vue!' ,
+					checked:true,
+					checkedNames:[],
+					picked:'',
+					selected: '',
+					selected1:[],
+					selected2:[],
+					selected3:[],
+					options:[{text:"下拉1",value:"1"},{text:"下拉2",value:"2"},{text:"下拉3",value:"3"}],
+					toggle:'',
+					msg2:'',
+					msg3:'',
+					msg4:'',
+					msg5:'',
+					msg6:'',
+					msg7:''
+					
+				}
+			});
+		</script>
+	</body>
+
+</html>

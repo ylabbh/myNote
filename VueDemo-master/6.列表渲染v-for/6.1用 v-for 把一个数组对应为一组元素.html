@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>用 v-for 把一个数组对应为一组元素</title>
+		<script src="../vue.js"></script>
+	</head>
+	<!-- 
+注意：
+ 1.为了给 Vue 一个提示，以便它能跟踪每个节点的身份，从而重用和重新排序现有元素，你需要为每项提供一个唯一 key 属性：
+ 2.不理解，不过你可以认为这样更高效
+ 建议尽可能在使用 v-for 时提供 key attribute，除非遍历输出的 DOM 内容非常简单，或者是刻意依赖默认行为以获取性能上的提升。
+ 因为它是 Vue 识别节点的一个通用机制，key 并不仅与 v-for 特别关联。后面我们将在指南中看到，它还具有其它用途。
+ 
+ -->
+	<body>
+		<ul id="example-1">
+			<!-- 一、遍历一个数组 -->
+			<!-- (每个元素的指代) in (数组对象) -->
+			<li v-for="item in items" v-bind:key="item.id">
+				{{ item.message }}
+			</li>
+			<!-- index:循环的索引 -->
+			<li v-for="(item, index) in items">
+				{{ parentMessage }} - {{ index }} - {{ item.message }}
+			</li>
+
+			<!-- 二、遍历一个对象 -->
+			<!-- 你也可以遍历一个对象的每个属性的值。 -->
+			<li v-for="each in object">
+				{{ each }}
+			</li>
+
+			<!-- 如果name和value和index都需要的话 -->
+			<li v-for="(value, name, index) in object">
+				{{ index }}. {{ name }}: {{ value }}
+			</li>
+
+
+			<!-- 三、带过滤/预先检查的遍历[]数组：
+				计算属性computed和方法methods作为变量同样可以进行遍历 -->
+			<li v-for="n in evenNumbers">{{ n }}</li>
+
+			<!-- 四、接着三，如果数据结构层层嵌套，需要深入 -->
+			<template v-for="n in numbers1">
+				<li v-for = "x in even(n)">
+					{{x}}---
+				</li>
+			</template>
+			
+			<!-- 五、在 v-for 里使用值范围 -->
+			<div>
+			  <span v-for="n in 10">{{ n }} </span>
+			</div>
+			
+			<!-- 六、在 <template> 上使用 v-for 来循环渲染一段包含多个元素的内容
+			 template：模板，表示这个标签只是拿来执行指令的，没有其它意义-->
+			<ul>
+			  <template v-for="item in items">
+			    <li>{{ item.message }}</li>
+			    <li class="divider" role="presentation"></li>
+			  </template>
+			</ul>
+			
+			<!-- 七、v-for 与 v-if 一同使用
+			 ：注意我们不推荐在同一元素上使用 v-if 和 v-for
+			 当它们处于同一节点，v-for 的优先级比 v-if 更高，这意味着 v-if 将分别重复运行于每个 v-for 循环中。-->
+			<li v-for="todo in todos" v-if="!todo.isComplete">
+			  {{ todo.todo }}
+			</li>
+			
+			<!-- 八，跳过循环 -->
+			<ul v-if="todos.length"><!-- 如果todos这个数组存在，才遍历 -->
+			  <li v-for="todo in todos">
+			    {{ todo }}
+			  </li>
+			</ul>
+			<p v-else>No todos left!</p>
+			
+			<!-- 九、在组件上使用 v-for -->
+		</ul>
+
+
+		<script>
+			var example1 = new Vue({
+				el: '#example-1',
+				data: {
+					parentMessage: 'Parent',
+					items: [{
+							message: 'Foo'
+						},
+						{
+							message: 'Bar'
+						}
+					],
+					object: {
+						title: '标题',
+						author: '作者',
+						publishedAt: '时间'
+					},
+					numbers: [1, 2, 3, 4, 5],
+					numbers1:[[1,2,3],[11,22,33],[111,222,333]],
+					/* 七 */
+					todos:[{todo:'任务一',isComplete:true},{todo:'任务二',isComplete:true},{todo:'任务三',isComplete:false}]
+				},
+				computed: {
+					/* 注意，这里没有传参，而是直接在函数体中引用 vue实例的变量。但是这显然有局限。如果我们数据结构很复杂,套了很多层咋整？
+						这时候显然需要一个允许传参的函数。看四。
+					*/
+					evenNumbers: function() {
+						return this.numbers.filter(function(number) {
+							return number % 2 === 0
+						})
+					},
+				},
+				/* 四：在多层 v-for 循环，复杂数据结构时，可用带参数的方法来实现过滤 */
+				methods:{
+					//数组.filter:数组的过滤方法，返回一个新的数组（根据过滤规则）
+					even: function (numbers) {
+					    return numbers.filter(function (number) {
+					      return number % 2 === 0
+					    })
+					}
+				}
+				
+			})
+		</script>
+	</body>
+
+</html>

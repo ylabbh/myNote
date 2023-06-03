@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>动态绑定HTML Class</title>
+		<script src="../vue.js"></script>
+	</head>
+<!-- 这里演示如何动态修改class和style属性，这是最为常用的属性，所以做了增强
+		1.动态绑定属性用v-bind: 
+		2.v-bind在绑定class、style时做了增强，不仅可以绑定普通变量，还可以绑定对象和数组-->
+	<body>
+		<!-- 方式一：绑定一个变量名-->
+		<div id="app-1">
+			<div :class="colorName">一些文本</div>
+		</div>
+		
+		
+		<!-- 方式二(是与否)：内部绑定一个对象-->
+		<!-- 下面的语法表示 active 这个 class 存在与否将取决于数据属性 isActive 的true/false 
+			 'text-danger'是否存在取决于hasError的true/false-->
+		<!-- 注意一个标签可以同时有多个class，同时生效哦~ -->
+		<div id="app-2">
+			<div
+			  class="static"
+			  v-bind:class="{ active: isActive, 'text-danger': hasError }">另一些文本</div>
+		</div>
+		<!-- 方式三(是与否)：外部绑定一个对象 -->
+		<div id="app-3">
+			<div v-bind:class="classObject">另一些文本</div>
+		</div>
+		
+		<!-- 方式四：绑定一个计算属性 -->
+		<div id="app-4">
+			<div v-bind:class="classObject">另一些文本</div>
+		</div>
+		
+		<!-- 方式五：绑定一个数组 -->
+		<div id="app-5">
+			<div v-bind:class="[activeClass, errorClass]">另一些文本</div>
+			<!-- 如果你也想根据条件切换列表中的 class，可以用三元表达式：
+				<div v-bind:class="[isActive ? activeClass : '', errorClass]"></div>
+			 -->
+			<!-- 在数组语法中也可以使用对象语法：
+				<div v-bind:class="[{ active: isActive }, errorClass]"></div>
+			 -->
+		</div>
+		
+		<script>
+			var app1 = new Vue({
+				el: '#app-1',
+				data: { 
+					colorName:'red'
+				}
+			});
+			
+			var app2 = new Vue({
+				el: '#app-2',
+				data: { 
+					isActive: true,
+					hasError: false
+				}
+			});
+			
+			var app3 = new Vue({
+				el: '#app-3',
+				data: {
+				  classObject: {
+				    active: true,
+				    'text-danger': false
+				  }
+				}
+			});
+			
+			var app4 = new Vue({
+				el: '#app-4',
+				data: {
+				  isActive: true,
+				  error: null
+				},
+				computed: {
+				  classObject: function () {
+				    return {
+				      active: this.isActive && !this.error,
+				      'text-danger': this.error && this.error.type === 'fatal'
+				    }
+				  }
+				}
+			});
+			
+			
+			var app5 = new Vue({
+				el: '#app-5',
+				data: {
+				  activeClass: 'active',
+				  errorClass: 'text-danger'
+				}
+			});
+			
+			
+		</script>
+		
+		<style>
+			/*3.现在我们对red这个样式进行设置  */
+			.red{
+				color: red;
+			}
+			.blue{
+				color: blue;
+			}
+		</style>
+	</body>
+	
+</html>

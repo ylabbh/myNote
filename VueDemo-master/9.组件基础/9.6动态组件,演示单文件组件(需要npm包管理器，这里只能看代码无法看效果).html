@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>9.6动态组件</title>
+		<script src="../vue.js"></script>
+
+	</head>
+	<body>
+		<!-- 通过 Vue 的 <component> 元素加一个特殊的 is attribute 来实现： -->
+		<div id="app">
+			<!-- 组件会在 `currentTabComponent` 改变时改变
+			 currentTabComponent 可以包括：
+				 已注册组件的名字，
+				 一个组件的选项对象-->
+			 <button type="button" v-on:click="change">变换组件</button>
+			
+			<!-- 如果这里使用<keep-alive>包裹的话，组件将会被缓存。
+			 当你有一堆组件允许互相切换的时候，有可能我希望它不是每次都重新加载，而是保留上次我使用的组件，那么就很有用
+			 -->
+			<keep-alive>
+				<component v-bind:is="currentTabComponent"></component>
+			</keep-alive>
+			
+			
+			<!-- 异步组件：（按需加载） 
+			在大型应用中，我们可能需要将应用分割成小一些的代码块，并且只在需要的时候才从服务器加载一个模块。为了简化，Vue 允许你以一个工厂函数的方式定义你的组件，这个工厂函数会异步解析你的组件定义。Vue 只有在这个组件需要被渲染的时候才会触发该工厂函数，且会把结果缓存起来供未来重渲染。-->
+			
+			<test></test>
+		</div>
+		
+		
+		
+		<script>
+			import test from './components/componentA.vue'
+			
+			/* 局部注册，在id="app" 的vue实例下注册一些组件 */
+			export default {
+				name : 'app',
+				components:{
+					test
+				}
+			}
+			
+			Vue.component('box', {
+			  template: '<li>这是个待办项</li>'
+			})
+			
+			Vue.component('box1', {
+			  template: '<li>组件变换了</li>'
+			})
+			
+			Vue.component('box2', {
+			  template: '<li>组件又变换了</li>'
+			})
+			
+			
+			Vue.component('async-example', function (resolve, reject) {
+			  setTimeout(function () {
+			    // 向 `resolve` 回调传递组件定义
+			    resolve({
+			      template: '<div>I am async!</div>'
+			    })
+			  }, 1000)
+			})
+			
+			
+			
+			var vm = new Vue({
+				el: '#app',
+				data:{
+					count:0,
+					currentTabComponent:'box'
+				},
+				methods:{
+					change:function(){
+						this.count++;
+						if(this.count == 1){
+							this.currentTabComponent = 'box1'
+						}else{
+							this.currentTabComponent = 'box2'
+						}
+						console.log(this.count);
+					}
+				}
+			});
+			
+		</script>
+	
+	</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

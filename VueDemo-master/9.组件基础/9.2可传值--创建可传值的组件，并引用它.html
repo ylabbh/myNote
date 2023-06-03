@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="../vue.js"></script>
+	</head>
+
+	<body>
+		
+		<div id="app">
+			<!-- 将值通过title输入组件，应用到template后渲染出来。 -->
+			<blog-post title="My journey with Vue"></blog-post>
+			<blog-post title="Blogging with Vue"></blog-post>
+			<blog-post title="Why Vue is so fun"></blog-post>
+		</div>
+
+		<div>-----------</div>
+		<div id="app1">
+			<!-- 通过遍历posts，循环渲染出一堆blog-post组件，把posts的值传递给组件 -->
+			<blog-post v-for="post in posts" v-bind:key="post.id" v-bind:title="post.title"></blog-post><!-- 绑定key是默认操作。 -->
+
+			<!-- 如果数据结构很复杂，上面这种一个一个取出来的办法显然很笨，vue考虑并重构了，直接把数组里的对象整个交给templet在模板内处理 -->
+			<blog-post1 v-for="post in posts" v-bind:key="post.id + 3" v-bind:post="post"></blog-post1>
+			<!-- 注意，在一个vue实例中如果有多个循环，要确保这些循环的key不冲突，否则会报错-->
+		</div>
+
+
+
+
+
+
+		<script>
+			/*
+				注意，每个组件必须只有一个根元素
+				如果组件有许多个元素，template这样定义会报错：
+				<h3>{{ title }}</h3>
+				<div v-html="content"></div>
+				
+				必须把所有元素用一个根元素包起来
+				<div class="blog-post">
+				  <h3>{{ title }}</h3>
+				  <div v-html="content"></div>
+				</div>
+				
+			*/
+			Vue.component('blog-post', {
+				template: '<h3>{{ title }}</h3>',
+				props: ['title','text'] /* 一个组件默认可以拥有任意数量的 prop，任何值都可以传递给任何 prop。 */
+			})
+
+			/* `` , '' 看，长得不一样``是 JavaScript 的模板字符串，来让多行的模板更易读。
+				ie可能不支持，需要用折行转译：\
+			*/
+			Vue.component('blog-post1', {
+				props: ['post'],
+				template: `
+							<div class="blog-post">
+							  <h3>组件中处理一个对象</h3>
+							  <h3>{{ post.title }}</h3>
+							  <div v-html="post.id"></div>
+							</div>
+						  `
+			})
+
+			var app = new Vue({
+				el: '#app'
+			});
+
+			new Vue({
+				el: '#app1',
+				data: {
+					posts: [{
+							id: 1,
+							title: 'My journey with Vue'
+							
+						},
+						{
+							id: 2,
+							title: 'Blogging with Vue'
+						},
+						{
+							id: 3,
+							title: 'Why Vue is so fun'
+						}
+					]
+				}
+			})
+		</script>
+	</body>
+
+</html>

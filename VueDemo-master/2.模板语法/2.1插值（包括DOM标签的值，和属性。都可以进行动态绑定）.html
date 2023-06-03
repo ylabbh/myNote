@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<title>1.4插值</title>
+<script src="../vue.js"></script>
+
+
+</head>
+
+<body>
+<div id="app">
+	<!--1.给DOM插值/-->
+	<p>{{ msg }}</p>
+	<p><span v-once>这个将不会改变: {{ msg }}</span></p>
+	
+	<!--2.直接插入一个DOM标签-->
+	<p>{{htmltext}}</p>
+	<p v-html="htmltext"></p>
+	
+	<!--3.动态插入绑定DOM属性 v-bind:属性="变量名"，1注意，这里的colorName只是一个变量名，并不是说 标签的class="colorName" -->
+	<div :class="colorName">一些文本</div>
+</div>
+
+<script>
+	var vm = new Vue({
+		el: '#app',
+		data: {
+			msg: 1,
+			htmltext: '<span style="color:red">演示v-html指定</span>',
+			/* colorName:'red', *//* 2在这里，我们完成了对colorName的绑定和赋值 。这时，class="red"*/
+			colorName:'blue',
+		}
+	})
+	vm.$data.msg = '2';
+</script>
+
+<style>
+	/*3.现在我们对red这个样式进行设置  */
+	.red{
+		color: red;
+	}
+	.blue{
+		color: blue;
+	}
+</style>
+</body>
+
+</html>

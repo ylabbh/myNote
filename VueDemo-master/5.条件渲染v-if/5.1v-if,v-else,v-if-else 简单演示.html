@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>条件渲染</title>
+		<script src="../vue.js"></script>
+	</head>
+<!-- v-if 指令用于条件性地渲染一块内容。这块内容只会在指令的表达式返回 truthy 值的时候被渲染。
+ v-else 元素必须紧跟在带 v-if 或者 v-else-if 的元素的后面，否则它将不会被识别。
+ v-else-if ....
+ 
+ 
+ -->
+	<body>
+		<div id="app">
+			<!-- 1.单个标签的条件渲染 -->
+			<h1 v-if="awesome">Vue is awesome!</h1>
+			<h1 v-else>Oh no 😢</h1>
+			<div v-if="randomNum > 0.5">
+			  {{randomNum}}
+			</div>
+			<!-- 2.多个标签的渲染：(在 <template> 元素上使用 v-if 是，<template>标签本身不会包含在if的渲染结果中) -->
+			<template v-if="ok">
+			  <h1>Title</h1>
+			  <p>Paragraph 1</p>
+			  <p>Paragraph 2</p>
+			</template>
+		</div>
+		
+		<script>
+			var app = new Vue({
+				el: '#app',
+				data: { 
+					awesome: false ,
+					ok:true,
+					randomNum:Math.random()
+				}
+			});
+			console.log(app.randomNum);
+		</script>
+	</body>
+
+</html>

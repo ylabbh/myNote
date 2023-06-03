@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="../vue.js"></script>
+	</head>
+
+	<body>
+		<div id="app">
+			<current-user>
+			  <template v-slot:default="slotProps">
+			    {{ slotProps.user.firstName }}
+			  </template>
+			</current-user>
+		</div>
+		
+		<script>
+			
+			Vue.component('current-user', {
+				template: `
+			    <span>
+			      <slot v-bind:user="user">
+			        {{ user.lastName }}
+			      </slot>
+			    </span>
+			  `
+			})
+			
+			var app = new Vue({
+				el: '#app',
+				data: { 
+					user: {
+						lastName:'赵',
+						name:'日天'
+					}
+				}
+			});
+		</script>
+	</body>
+
+</html>

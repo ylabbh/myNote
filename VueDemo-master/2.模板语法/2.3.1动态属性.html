@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<!-- 本例中的演示：
+ 3.v-if 条件指令
+ 4.v-for 循环指令
+ 5.v-on 监听事件指令
+ 6.v-model 指示某个表单输入的值要和应用状态进行双向绑定 的指令
+ -->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<script src="../vue.js"></script>
+	</head>
+
+	<body>
+		<!-- 方括号括起来的 JavaScript 表达式作为一个指令的参数：
+				--不仅仅绑定的属性值可以动态，绑定什么属性，同样可以动态。
+		 -->
+		 <!--同样地，你可以使用动态参数为一个动态的事件名绑定处理函数：
+		  <a v-on:[eventName]="doSomething"> ... </a>
+		  在这个示例中，当 eventName 的值为 "focus" 时，v-on:[eventName] 将等价于 v-on:focus。
+		  -->
+		<div id="app-2">
+		  <a v-bind:[name]="url">...</a>
+		</div>
+		
+		
+		<script>
+			var app2 = new Vue({
+			  el: '#app-2',
+			  data: {
+				url: "http://www.baidu.com",
+				name:'href'
+			  }
+			})
+
+		</script>
+
+	</body>
+
+</html>

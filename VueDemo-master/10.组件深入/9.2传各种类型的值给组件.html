@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>传值问题，各种类型的值</title>
+		<script src="../vue.js"></script>
+	</head>
+
+	<body>
+
+		<div id="app">
+			<!-- 传递静态值 -->
+			<blog-post title="My journey with Vue"></blog-post>
+			<blog-post title="Blogging with Vue"></blog-post>
+			<blog-post title="---------------------"></blog-post>
+			<!-- 用v-bind动态绑定传值 -->
+			<blog-post v-bind:title="post.title + count"></blog-post>
+			<button type="button" v-on:click="count++">改变值哦</button>
+
+			<!-- 传入一个对象 -->
+			<!-- 即便对象是静态的，我们仍然需要 `v-bind` 来告诉 Vue -->
+			<!-- 这是一个 JavaScript 表达式而不是一个字符串。-->
+			<blog-post v-bind:author="{
+			    name: 'Veronica',
+			    company: 'Veridian Dynamics'
+			  }" title="标题"></blog-post>
+
+			<!-- 不用指定属性，传一个对象直接整体绑定 -->
+			<blog-post v-bind="post"></blog-post>
+
+			<!-- 传入数组 -->
+			<blog-post v-bind:comment-ids="[234, 266, 273]"></blog-post>
+
+			<!-- 组件嵌套时，单向数据流 问题 -->
+			<!-- 所有的 prop 都使得其父子 prop 之间形成了一个单向下行绑定：父级 prop 的更新会向下流动到子组件中，但是反过来则不行。这样会防止从子组件意外改变父级组件的状态，从而导致你的应用的数据流向难以理解。-->
+			<!-- 失败，这是个啥东西啊。。。没理解 -->
+		</div>
+		
+		
+		
+		
+		<div id="app1">
+			<component-1 title="title" initialCounter="initialCounter"></component-1>
+		</div>
+
+		<script>
+			Vue.component('blog-post', {
+				template: '<h3>{{ title }} + {{author}} + {{commentIds}}</h3>',
+				/* 一个组件默认可以拥有任意数量的 prop，任何值都可以传递给任何 prop。 */
+				/*  但是，通常你希望每个 prop 都有指定的值类型。 */
+				props: {
+					title: String,
+					likes: Number,
+					isPublished: Boolean,
+					commentIds: Array,
+					author: Object,
+					callback: Function,
+					contactsPromise: Promise
+				}
+			})
+			var app = new Vue({
+				el: '#app',
+				data: {
+					post: {
+						title: '标题党'
+					},
+					count: 0
+				}
+			});
+
+
+			/* 局部注册的方式演示 */
+			/* 注意 props和data的区别，data可以理解为类中的变量，可以在定义时初始化。props理解为方法的入参，只有在html中创建组件的时候才能够传值。
+			例如：<blog-post title="Blogging with Vue"></blog-post>，声明了一个title的prop后，我们就可以在外部进行赋值，但是组件的data的内容是没有暴露的。外部是不知道的。
+			
+			
+			data中可以初始化具体值，props只能定义属性名和类型，没法初始化值
+			*/
+			var com = {
+				template: '<h3>{{ title }} + {{author}} + {{counter}}</h3>',
+				props: {
+					title: String,
+					likes: Number,
+					isPublished: Boolean,
+					commentIds: Array,
+					author: Object,
+					callback: Function,
+					contactsPromise: Promise
+				},
+				data: function() {
+					return {
+						counter: this.initialCounter
+					}
+				}
+			}
+			
+			var vm = new Vue({
+				el: '#app1',
+				/* 在这里就可以将js对象转变成局部组件进行注册了。组件只会在这个vue实例中生效 */
+				
+				data:{
+					initialCounter:1
+				},
+				components: {
+				    'component-1': com
+				},
+			});
+			
+			
+			
+			
+			/* 
+			
+			！！Prop 验证：（我们可以为组件的 prop 指定验证要求，例如你知道的这些类型。如果有一个需求没有被满足，则 Vue 会在浏览器控制台中警告你。这在开发一个会被别人用到的组件时尤其有帮助。）
+			类似于接口的参数校验，当你定义一个公共组件，你可以为“入参”data的类型和长度等做一些限制，以规范别人使用的你公共组件
+				当 prop 验证失败的时候，(开发环境构建版本的) Vue 将会产生一个控制台的警告。
+				
+				type 可以是下列原生构造函数中的一个：
+				
+				String
+				Number
+				Boolean
+				Array
+				Object
+				Date
+				Function
+				Symbol
+				
+			Vue.component('my-component', {
+			  props: {
+			    // 基础的类型检查 (`null` 和 `undefined` 会通过任何类型验证)
+			    propA: Number,
+			    // 多个可能的类型
+			    propB: [String, Number],
+			    // 必填的字符串
+			    propC: {
+			      type: String,
+			      required: true
+			    },
+			    // 带有默认值的数字
+			    propD: {
+			      type: Number,
+			      default: 100
+			    },
+			    // 带有默认值的对象
+			    propE: {
+			      type: Object,
+			      // 对象或数组默认值必须从一个工厂函数获取
+			      default: function () {
+			        return { message: 'hello' }
+			      }
+			    },
+			    // 自定义验证函数
+			    propF: {
+			      validator: function (value) {
+			        // 这个值必须匹配下列字符串中的一个
+			        return ['success', 'warning', 'danger'].indexOf(value) !== -1
+			      }
+			    }
+			  }
+			}) 
+			 
+			 
+			 额外的，type 还可以是一个自定义的构造函数，并且通过 instanceof 来进行检查确认。例如，给定下列现成的构造函数：..........
+			 */
+			
+		</script>
+	</body>
+
+</html>

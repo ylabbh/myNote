@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>计算属性</title>
+		<script src="../vue.js"></script>
+	</head>
+<!-- 
+模板内的表达式非常便利，但是设计它们的初衷是用于简单运算的。
+对于任何复杂逻辑，你都应当使用计算属性。而不是在{{}}里面写太过复杂的逻辑
+一、计算属性:
+1.选项 / 数据：computed  用来声明计算属性
+2.看下面的例子，message作为reversedMessage这个函数的一个变量能够正常使用。
+reversedMessage的值是经过计算后return的值。reversedMessage本身也作为vm实例的一个属性可以正常插值。
+二、计算属性缓存（computed属性） vs 方法（methods属性）
+	用methods属性，定义一个方法，效果是一样的，那么这两种方式有什么区别？
+		1.计算属性有缓存，只要依赖的数据(本例中的message)没有发生变化，多次调用计算属性直接获取缓存，不用重复计算。
+		2.这也同样意味着下面的计算属性将不再更新，因为 Date.now() 不是响应式依赖：
+			computed: {
+			  now: function () {
+			    return Date.now()
+			  }
+			}
+
+三、总结
+	1.复杂逻辑用  methods方法属性/computed计算属性  来实现，不要直接写在{{}}里
+	2.大计算量、不会频繁变化的。用computed计算属性，走缓存。不用methods方法属性
+ -->
+	<body>
+		<div id="example">
+		  <p>文本: "{{ message }}"</p>
+		  <p>计算属性的方式进行文本反转: "{{ reversedMessage }}"</p>
+		  <p>方法method的方式进行文本反转: "{{ reversedMessageTest() }}"</p>
+		</div>
+		
+		<script>
+			var vm = new Vue({
+			  el: '#example',
+			  data: {
+			    message: 'Hello'
+			  },
+			  
+			  //{ [key: string]: Function | { get: Function, set: Function } }
+			  computed: {
+			    // 计算属性的 getter
+			    reversedMessage: function () {
+					return this.message.split('').reverse().join('')
+			    },
+				//如果这里再声明一个function，那就是reversedMessage的setter属性
+			  },
+			  
+			  methods:{
+				reversedMessageTest:function(){
+					return this.message.split('').reverse().join('')
+				}
+			  }
+			})
+		</script>
+	</body>
+
+</html>

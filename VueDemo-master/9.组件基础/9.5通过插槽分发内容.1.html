@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>9.5通过插槽分发内容2</title>
+		<script src="../vue.js"></script>
+
+	</head>
+
+	<body>
+		<div id="app">
+			<alert-box>
+				<!-- 插槽内可以包含任何模板代码，包括 HTML：甚至其它的组件：
+				 2.再深入，如果我要在插槽内使用数据：
+				 -->
+				Something bad happened.{{Person.name}}
+				<!-- 3.使用实例的数据是允许的，也就是相同的“作用域”。但是插槽中无法使用父级组件的数据。除非父级组件的内容是绑定到vue实例上的。
+			  子父级模板的作用域问题：父子组件具有独立的作用于，互相之间是无法引用数据的。-->
+			</alert-box>
+			
+			<!-- 在向具名插槽提供内容的时候，我们可以在一个 <template> 元素上使用 v-slot 指令，并以 v-slot 的参数的形式提供其名称：
+			 即   <template v-slot:插槽名> 的方式（不用记，复制黏贴即可）
+			 -->
+			 <base-layout>
+			   <template v-slot:header>
+			     <h1>这是个标题</h1>
+			   </template>
+			   <template v-slot:footer>
+			     <p>····这是结尾····</p>
+			   </template>
+			   <!-- 看這個組件使用的示例，更复杂，你可以视为，<base-layout>标签里的内容是散装的，结构取决于组件定义，有指定插槽名的子标签插入对应位置，没有的，插入默认插槽。如果没有默认插槽，则忽略这些内容。-->
+			   <!-- 这两个<p>标签没有指定插槽，会进入默认插槽位置：
+			   <main>
+			   	 <slot></slot>
+			   </main>
+			   -->
+			   <!-- 当然，如果你想更直观点，可以使用  <template v-slot:default>将它们包裹起来，效果一样。-->
+			   <p>一些内容</p>
+			   <p>其它内容</p>
+			 </base-layout>
+		</div>
+		
+		
+		<!-- 6.动态具名插槽：名称同样可以实现动态，绑定到实例中，这样就更加灵活了 -->
+		<div id="app-1">
+			<base-layout>
+			  <template v-slot:[name1]>
+			    <h1>这是个标题</h1>
+			  </template>
+			  <template v-slot:[name2]>
+			    <p>····这是结尾····</p>
+			  </template>
+			  <p>一些内容</p>
+			  <p>其它内容</p>
+			</base-layout>
+		</div>
+		
+		
+
+
+		<script>
+			/* 
+			 1.和 HTML 元素一样，我们经常需要向一个组件传递内容，像这样：
+			 <slot></slot>即表示当组件被使用的时候，标签内的内容应该放在哪个位置。
+			 4.默认值问题：<slot>默认值</slot>：这种形式表示，如果插槽没有值，就会使用默认值进行渲染，否则使用提供的值
+			 */
+			Vue.component('alert-box', {
+				template: `
+			    <div class="demo-alert-box">
+			      <strong>Error!</strong>
+			      <slot></slot>
+			    </div>
+			  `
+			})
+
+			/* 5.一个组件的子标签有多个，可能会有多个插槽需要填充，这是存在的。为了区分这些插槽，需要给插槽命名--具名插槽 */
+			Vue.component('base-layout', {
+				template: `<div class="container">
+							  <header>
+								<!-- 我们希望把页头放这里 -->
+								<slot name="header"></slot>
+							  </header>
+							  <main>
+								<!-- 我们希望把主要内容放这里 -->
+								<!-- 一个不带 name 的 <slot> 出口会带有隐含的名字“default”。 -->
+								<slot></slot>
+							  </main>
+							  <footer>
+								<!-- 我们希望把页脚放这里 -->
+								<slot name="footer"></slot>
+							  </footer>
+							</div>`
+			})
+			
+			
+			
+			
+			
+			
+
+			/* 1.创建Vue实例、*/
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					Person: {
+						name: '赵日天'
+					}
+				}
+			});
+			
+			var vm1 = new Vue({
+				el: '#app-1',
+				data: {
+					name1:"header",
+					name2:"footer"
+				}
+			});
+		</script>
+
+	</body>
+
+</html>

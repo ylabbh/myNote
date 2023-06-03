@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="../vue.js"></script>
+	</head>
+
+	<body>
+		<div id="app">
+			<li v-for="each in object">
+			    {{ each }}
+			 </li>
+		</div>
+		
+		<script>
+			var vm = new Vue({
+			  el: '#app',
+			  data: {
+				parentMessage: 'Parent',
+				object: {
+				      title: '标题',
+				      author: '作者',
+				      publishedAt: '时间'
+				    }
+			  }
+			})
+			//还是由于 JavaScript 的限制，Vue 不能检测对象属性的添加或删除：
+			vm.object.title = '标题1'//对象修改在遍历是依旧是相应式的
+			vm.object.local = '发布地点'
+			
+			//额。。。同样跟官网有出入，对象内新增一个属性，遍历是它还是响应式的
+			//有时你可能需要为已有对象赋值多个新属性，也可以这样
+			vm.object = Object.assign({}, vm.object, {
+			  age: 27,
+			  favoriteColor: 'Vue Green'
+			})
+			
+			
+		</script>
+	</body>
+
+</html>

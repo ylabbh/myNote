@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="vue.js"></script>
+	</head>
+
+	<body>
+		<script>
+			// 1.我们的数据对象
+			var myData = { a: 1 }
+			
+			// 2.该对象被加入到一个 Vue 实例中
+			var vm = new Vue({
+			  data: myData,
+			  /* 3.也可以用这种方式，构造一个数据对象并初始化
+			   data: {
+			     newTodoText: '',
+			     visitCount: 0,
+			     hideCompletedTodos: false,
+			     todos: [],
+			     error: null
+			   }
+			   */
+			})
+			
+			
+			/* 4.不论是改变vm的a，还是myData的a，效果都是一样的。---响应式 */
+			myData.a = 33;
+			console.log(vm.a);
+			vm.a = 44;
+			console.log(myData.a);
+			
+			
+			// 5.值得注意的是只有当实例被创建时就已经存在于 data 中的属性才是响应式的。
+			/* 这里我们为vm创建另一个数据b，但是，它无法完成响应式。因为在初始化时它没有被绑定 */
+			vm.b = 'hi';
+			
+		</script>
+		
+	</body>
+
+</html>

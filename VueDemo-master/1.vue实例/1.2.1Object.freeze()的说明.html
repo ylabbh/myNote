@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="../vue.js"></script>
+	</head>
+
+	<body>
+		<script>
+			// 1.我们的数据对象
+			var myData = { a: 1 }
+			/* 2.唯一的例外是使用 Object.freeze()，这会阻止修改现有的属性，也意味着响应系统无法再追踪变化。 */
+			/* 3.声明了这个之后，vm已经无法响应a，之后的代码，可以用vm.a获取a的值，但是vm.a = 3就会报错 */
+			/* Object.freeze();相当于“只进行初始化，不进行后续的响应” */
+			Object.freeze(myData);
+			
+			var vm = new Vue({
+			  data: myData,//
+			})
+			
+			
+			console.log(vm.a);
+			
+			
+			
+			
+		</script>
+		
+	</body>
+
+</html>

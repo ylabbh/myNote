@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>绑定内联样式</title>
+		<script src="../vue.js"></script>
+	</head>
+
+	<body>
+		<!-- 一、直接把CSS声明在html上 -->
+		<div id="app">
+			<!-- v-bind:style 的对象语法十分直观——看着非常像 CSS，但其实是一个 JavaScript 对象。CSS 属性名可以用驼峰式 (camelCase) 或短横线分隔 (kebab-case，记得用引号括起来) 来命名： -->
+			<!-- 可以看到，当使用 v-bind:style，{}内能够识别CSS属性，通过{CSS属性:变量名}方式动态绑定样式-->
+			<div v-bind:style="{ color: activeColor, fontSize: fontSize + 'px' }">演示样式绑定</div>
+		</div>
+		
+		
+		<!-- 二、捆绑成一个  样式对象  声明在VUE中（推荐） -->
+		<div id="app-1">
+			<div v-bind:style="styleObject">捆绑成一个样式对象声明在VUE中</div>
+			<!-- 你甚至可以绑定多个样式对象（使用数组）
+			 <div v-bind:style="[baseStyles, overridingStyles]"></div>
+			 -->
+			
+			
+			
+		</div>
+		
+		<script>
+			var app = new Vue({
+				el: '#app',
+				data: {
+				  activeColor: 'red',
+				  fontSize: 50
+				}
+			});
+			
+			var app1 = new Vue({
+				el: '#app-1',
+				data: {
+				  styleObject: {
+				    color: 'blue',
+				    fontSize: '13px'
+				  }
+				}
+			});
+			
+			
+		</script>
+	</body>
+
+</html>
